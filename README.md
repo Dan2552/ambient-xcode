@@ -8,9 +8,14 @@ An `xcconfig` file can be used in order to help abstract your settings away from
 Installation
 ============
 
-Add the following to your `Gemfile`:
+Simply run:
 ```
-gem "ambient-xcode", git: "https://github.com/Dan2552/ambient-xcode"
+gem install ambient-xcode
+```
+
+Or if you use Bundler, add the following to your `Gemfile`:
+```
+gem "ambient-xcode"
 ```
 
 Usage
