@@ -3,7 +3,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |gem|
   gem.name          = 'ambient-xcode'
-  gem.version       = '0.1.0'
+  gem.version       = '0.2.0'
   gem.authors       = ['Daniel Green']
   gem.email         = ['dan2552@gmail.com']
   gem.description   = %q{CLI for configuring Xcode projects from a Ruby file.}
