@@ -23,9 +23,9 @@ Usage
 
 Create an `Ambientfile` defining your project in the same directory as your `*.xcodeproj` file.
 
-Here's an example of the `Ambientfile` structure:
+Here's a sample of the `Ambientfile` structure:
 ```ruby
-enable_warnings_and_static_analyser!
+enable_default_warnings!
 use_defaults_for_everything_not_specified_in_this_file!
 
 option "IPHONEOS_DEPLOYMENT_TARGET", "7.0"

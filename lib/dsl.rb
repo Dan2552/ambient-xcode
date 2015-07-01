@@ -2,7 +2,7 @@ def option(name, value)
   Ambient.configure { set_option(name, value) }
 end
 
-def enable_warnings_and_static_analyser!
+def enable_extra_warnings_and_static_analyser!
   warnings = %w(GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED
     GCC_WARN_MISSING_PARENTHESES
     GCC_WARN_ABOUT_RETURN_TYPE
@@ -29,6 +29,28 @@ def enable_warnings_and_static_analyser!
     RUN_CLANG_STATIC_ANALYZER
     GCC_TREAT_WARNINGS_AS_ERRORS)
   warnings.each { |w| option(w, true) }
+end
+
+def enable_default_warnings!
+  truthy = %w(CLANG_WARN_BOOL_CONVERSION
+    CLANG_WARN_CONSTANT_CONVERSION
+    CLANG_WARN_EMPTY_BODY
+    CLANG_WARN_ENUM_CONVERSION
+    CLANG_WARN_INT_CONVERSION
+    CLANG_WARN_UNREACHABLE_CODE
+    CLANG_WARN__DUPLICATE_METHOD_MATCH
+    GCC_WARN_64_TO_32_BIT_CONVERSION
+    GCC_WARN_UNDECLARED_SELECTOR
+    GCC_WARN_UNUSED_FUNCTION
+    GCC_WARN_UNUSED_VARIABLE)
+  error = %w(CLANG_WARN_DIRECT_OBJC_ISA_USAGE
+    CLANG_WARN_OBJC_ROOT_CLASS
+    GCC_WARN_ABOUT_RETURN_TYPE)
+  aggressive = %w(GCC_WARN_UNINITIALIZED_AUTOS)
+
+  truthy.each { |w| option(w, true) }
+  error.each { |w| option(w, "YES_ERROR") }
+  aggressive.each { |w| option(w, "YES_AGGRESSIVE") }
 end
 
 def target(name, &block)
