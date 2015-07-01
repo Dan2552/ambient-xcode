@@ -41,7 +41,9 @@ target "MyProject" do
 end
 ```
 
-run `ambient` from the command line to write your settings into your project.
+Run `ambient` from the command line to write your settings into your project.
+
+The [example Ambientfile](https://github.com/Dan2552/ambient-xcode/blob/master/example/Ambientfile) matches the exact settings of a new iOS project.
 
 Notes
 =====
