@@ -39,6 +39,10 @@ def use_defaults_for_everything_not_specified_in_this_file!
   Ambient.configure { @use_defaults = true }
 end
 
+def scheme(name, parent: nil, &block)
+  SchemeScope.new(nil, name, parent).configure(&block)
+end
+
 class TargetScope
   attr_reader :name
 
@@ -67,7 +71,10 @@ class SchemeScope
     @parent = parent
 
     child = name
-    Ambient.configure { set_parent_target(target.name, child, parent) }
+
+    if @target
+      Ambient.configure { set_parent_target(target.name, child, parent) }
+    end
   end
 
   def configure(&block)
@@ -79,9 +86,10 @@ class SchemeScope
     name = @name
     parent = @parent
 
-    Ambient.configure do
-      # require 'pry'; binding.pry
-      set_option(option_name, value, target: target.name, scheme: name, parent: parent)
+    if target
+      Ambient.configure { set_option(option_name, value, target: target.name, scheme: name, parent: parent) }
+    else
+      Ambient.configure { set_option(option_name, value, scheme: name, parent: parent) }
     end
   end
 end

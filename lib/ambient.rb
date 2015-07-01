@@ -17,7 +17,9 @@ module Ambient
   @project_options = {}
   @shared_target_options = {}
   @target_options = {}
+  @scheme_options = {}
   @parents = {}
+
   def configure(&block)
     instance_eval &block
   end
@@ -42,12 +44,16 @@ module Ambient
         @target_options[target][scheme] ||= {}
         @target_options[target][scheme][option] = value
       else
-        # require 'pry'; binding.pry
         @shared_target_options[target] ||= {}
         @shared_target_options[target][option] = value
       end
     else
-      @project_options[option] = value
+      if scheme
+        @scheme_options[scheme] ||= {}
+        @scheme_options[scheme][option] = value
+      else
+        @project_options[option] = value
+      end
     end
   end
 
@@ -56,6 +62,7 @@ module Ambient
     reset_project_to_defaults
     reset_targets_to_defaults
     process_project_options
+    process_scheme_options
     process_shared_target_options
     process_target_options
   end
@@ -77,6 +84,11 @@ module Ambient
   def process_project_options
     puts "applying ambient project settings"
     project_helper.process_project_options(@project_options)
+  end
+
+  def process_scheme_options
+    puts "applying ambient scheme settings"
+    project_helper.process_scheme_options(@scheme_options)
   end
 
   def process_shared_target_options

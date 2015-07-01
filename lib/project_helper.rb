@@ -62,6 +62,17 @@ class ProjectHelper
     save_changes
   end
 
+  def process_scheme_options(options)
+    @project.build_configurations.each do |configuration|
+      scheme_options = options[configuration.to_s] || {}
+      scheme_options.each do |key, value|
+        configuration.build_settings[key] = value
+        configuration.build_settings.delete(key) if value == nil
+      end
+    end
+    save_changes
+  end
+
   def print_info
     puts "Targets:"
     @project.targets.each { |t| puts "- #{t.to_s}" }
