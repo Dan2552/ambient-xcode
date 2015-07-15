@@ -1,3 +1,7 @@
+def use_settings_from(filename)
+  Ambient.configure { run_ambientfile(filename) }
+end
+
 def option(name, value)
   Ambient.configure { set_option(name, value) }
 end

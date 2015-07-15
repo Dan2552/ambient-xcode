@@ -4,4 +4,5 @@ require 'fileutils'
 $:.push File.expand_path("../../lib", __FILE__)
 
 require 'ambient'
-Ambient.setup_project
+file = ARGV[0] || 'Ambientfile'
+Ambient.setup_project(file)

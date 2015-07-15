@@ -64,7 +64,8 @@ module Ambient
     capabilities << capability_name
   end
 
-  def setup_project
+  def setup_project(ambientfile)
+    run_ambientfile(ambientfile)
     project_helper.print_info
     reset_project_to_defaults if @use_defaults
     reset_targets_to_defaults if @use_defaults
@@ -131,8 +132,10 @@ module Ambient
     end
   end
 
-  ambient = File.join(Dir.pwd, 'Ambientfile')
-  raise "ambient not found" unless File.exists?(ambient)
-
-  load ambient
+  def run_ambientfile(filename)
+    puts "Reading settings from #{filename}"
+    ambient = File.join(Dir.pwd, filename)
+    raise "#{filename} not found in current directory." unless File.exists?(ambient)
+    load ambient
+  end
 end

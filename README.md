@@ -48,6 +48,17 @@ Run `ambient` from the command line to write your settings into your project.
 
 The [example Ambientfile](https://github.com/Dan2552/ambient-xcode/blob/master/example/Ambientfile) matches the exact settings of a new iOS project.
 
+If for any reason you want multiple Ambientfile, you can:
+```
+use_settings_from 'Ambientfile'
+
+target "Babylon" do
+  capability :apple_pay
+end
+```
+
+Just run `ambient [filename]` (i.e. `ambient Ambientfile-enterprise`)
+
 Notes
 =====
 
