@@ -1,5 +1,4 @@
 require 'xcodeproj'
-require 'highline/import'
 
 class ProjectHelper
   PROJECTS = Dir.glob('*.xcodeproj')
@@ -13,7 +12,6 @@ class ProjectHelper
       build_settings = configuration.build_settings
       build_settings.each { |k, _| build_settings.delete(k) }
     end
-    save_changes
   end
 
   def reset_targets_to_defaults
@@ -25,6 +23,12 @@ class ProjectHelper
     end
   end
 
+  def reset_capabilities_to_defaults
+    @project.targets.each do |target|
+      CapabilitiesHelper.new(@project, target).clear_capabilities
+    end
+  end
+
   def process_project_options(options)
     @project.build_configurations.each do |configuration|
       options.each do |key, value|
@@ -32,7 +36,6 @@ class ProjectHelper
         configuration.build_settings.delete(key) if value == nil
       end
     end
-    save_changes
   end
 
   def process_shared_target_options(shared_target_options)
@@ -44,7 +47,6 @@ class ProjectHelper
         end
       end
     end
-    save_changes
   end
 
   def process_target_options(target_options)
@@ -59,7 +61,17 @@ class ProjectHelper
         end
       end
     end
-    save_changes
+  end
+
+  def process_capabilities(capabilities_hash)
+    capabilities_hash.each do |target_name, capabilities|
+      @project.targets.each do |target|
+        if target_name == target.to_s
+          helper = CapabilitiesHelper.new(@project, target)
+          capabilities.each { |c| helper.enable_capability(c) }
+        end
+      end
+    end
   end
 
   def process_scheme_options(options)
@@ -70,7 +82,6 @@ class ProjectHelper
         configuration.build_settings.delete(key) if value == nil
       end
     end
-    save_changes
   end
 
   def print_info
@@ -82,9 +93,8 @@ class ProjectHelper
     puts ""
   end
 
-  private
-
   def save_changes
     @project.save
   end
+
 end

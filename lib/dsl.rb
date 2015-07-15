@@ -84,6 +84,11 @@ class TargetScope
   def scheme(name, parent: nil, &block)
     SchemeScope.new(self, name, parent).configure(&block)
   end
+
+  def capability(capability_name)
+    target_name = @name
+    Ambient.configure { set_capability(target_name, capability_name) }
+  end
 end
 
 class SchemeScope

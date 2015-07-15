@@ -7,6 +7,7 @@ unless Kernel.respond_to?(:require_relative)
 end
 
 require_relative 'project_helper'
+require_relative 'capabilities_helper'
 require_relative 'dsl'
 
 module Ambient
@@ -19,6 +20,7 @@ module Ambient
   @target_options = {}
   @scheme_options = {}
   @parents = {}
+  @capabilities = {}
 
   def configure(&block)
     instance_eval &block
@@ -57,28 +59,37 @@ module Ambient
     end
   end
 
+  def set_capability(target_name, capability_name)
+    capabilities = @capabilities[target_name] ||= []
+    capabilities << capability_name
+  end
+
   def setup_project
     project_helper.print_info
-    reset_project_to_defaults
-    reset_targets_to_defaults
+    reset_project_to_defaults if @use_defaults
+    reset_targets_to_defaults if @use_defaults
+    reset_capabilites_to_defaults if @use_defaults
     process_project_options
     process_scheme_options
     process_shared_target_options
     process_target_options
+    process_capabilities
+    project_helper.save_changes
   end
 
   def reset_project_to_defaults
-    if @use_defaults
-      puts "resetting project settings to xcode default settings"
-      project_helper.reset_project_to_defaults
-    end
+    puts "resetting project settings to xcode default settings"
+    project_helper.reset_project_to_defaults
   end
 
   def reset_targets_to_defaults
-    if @use_defaults
-      puts "resetting target settings to xcode default settings"
-      project_helper.reset_targets_to_defaults
-    end
+    puts "resetting target settings to xcode default settings"
+    project_helper.reset_targets_to_defaults
+  end
+
+  def reset_capabilites_to_defaults
+    puts "resetting capabilities to xcode default settings"
+    project_helper.reset_capabilities_to_defaults
   end
 
   def process_project_options
@@ -100,6 +111,11 @@ module Ambient
     puts "applying ambient target settings"
     load_in_parent_target_values
     project_helper.process_target_options(@target_options)
+  end
+
+  def process_capabilities
+    puts "applying ambient capabilities"
+    project_helper.process_capabilities(@capabilities)
   end
 
   def load_in_parent_target_values

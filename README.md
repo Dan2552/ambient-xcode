@@ -34,6 +34,9 @@ option "CLANG_ENABLE_OBJC_ARC", true
 option "CLANG_ENABLE_MODULES", true
 
 target "MyProject" do
+  capability :healthkit
+  capability :apple_pay
+
   scheme "Debug" do
     option "PRODUCT_NAME", "Debug"
     option "BUNDLE_DISPLAY_NAME_SUFFIX", "uk.danielgreen.MyProject"
