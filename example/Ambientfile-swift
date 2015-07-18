@@ -1,0 +1,64 @@
+PROJECT = "EmptySwiftProject"
+PREFIX = "uk.danielgreen."
+
+use_defaults_for_everything_not_specified_in_this_file!
+enable_default_warnings!
+
+option "ALWAYS_SEARCH_USER_PATHS", false
+option "CLANG_CXX_LANGUAGE_STANDARD", "gnu++0x"
+option "CLANG_CXX_LIBRARY", "libc++"
+option "CLANG_ENABLE_MODULES", true
+option "CLANG_ENABLE_OBJC_ARC", true
+
+option "CODE_SIGN_IDENTITY[sdk=iphoneos*]", "iPhone Developer"
+option "COPY_PHASE_STRIP", false
+
+option "ENABLE_STRICT_OBJC_MSGSEND", true
+option "GCC_C_LANGUAGE_STANDARD", "gnu99"
+option "GCC_NO_COMMON_BLOCKS", true
+option "SDKROOT", "iphoneos"
+option "IPHONEOS_DEPLOYMENT_TARGET", "9.0"
+
+scheme "Debug" do
+  option "DEBUG_INFORMATION_FORMAT", "dwarf"
+  option "ENABLE_TESTABILITY", true
+  option "MTL_ENABLE_DEBUG_INFO", true
+  option "ONLY_ACTIVE_ARCH", true
+  option "GCC_DYNAMIC_NO_PIC", false
+  option "GCC_OPTIMIZATION_LEVEL", "0"
+  option "GCC_PREPROCESSOR_DEFINITIONS", ["DEBUG=1", "$(inherited)"]
+  option "SWIFT_OPTIMIZATION_LEVEL", "-Onone"
+end
+
+scheme "Release" do
+  option "DEBUG_INFORMATION_FORMAT", "dwarf-with-dsym"
+  option "ENABLE_NS_ASSERTIONS", false
+  option "MTL_ENABLE_DEBUG_INFO", false
+  option "VALIDATE_PRODUCT", true
+end
+
+target "#{PROJECT}" do
+  option "INFOPLIST_FILE", "#{PROJECT}/Info.plist"
+  option "PRODUCT_BUNDLE_IDENTIFIER", "#{PREFIX}#{PROJECT}"
+  option "ASSETCATALOG_COMPILER_APPICON_NAME", "AppIcon"
+  option "LD_RUNPATH_SEARCH_PATHS", "$(inherited) @executable_path/Frameworks"
+  option "PRODUCT_NAME", "$(TARGET_NAME)"
+end
+
+target "#{PROJECT}Tests" do
+  option "INFOPLIST_FILE", "#{PROJECT}Tests/Info.plist"
+  option "BUNDLE_LOADER", "$(TEST_HOST)"
+  option "TEST_HOST", "$(BUILT_PRODUCTS_DIR)/#{PROJECT}.app/#{PROJECT}"
+  option "PRODUCT_BUNDLE_IDENTIFIER", "#{PREFIX}#{PROJECT}Tests"
+  option "LD_RUNPATH_SEARCH_PATHS", "$(inherited) @executable_path/Frameworks @loader_path/Frameworks"
+  option "PRODUCT_NAME", "$(TARGET_NAME)"
+end
+
+target "#{PROJECT}UITests" do
+  option "INFOPLIST_FILE", "#{PROJECT}UITests/Info.plist"
+  option "TEST_TARGET_NAME", "#{PROJECT}"
+  option "PRODUCT_BUNDLE_IDENTIFIER", "#{PREFIX}#{PROJECT}UITests"
+  option "LD_RUNPATH_SEARCH_PATHS", "$(inherited) @executable_path/Frameworks @loader_path/Frameworks"
+  option "USES_XCTRUNNER", "YES"
+  option "PRODUCT_NAME", "$(TARGET_NAME)"
+end
