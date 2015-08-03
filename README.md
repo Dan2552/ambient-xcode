@@ -53,6 +53,7 @@ If for any reason you want multiple Ambientfile, you can:
 use_settings_from 'Ambientfile'
 
 target "Babylon" do
+  development_team "341LABUM21"
   capability :apple_pay
 end
 ```
@@ -70,10 +71,9 @@ Notes
 Possible future features
 ========================
 
-- Defining capabilities (per target if possible... using `.entitlements` maybe)
+- Automatic editing of `.entitlements`
 - Helper method to change build phases to default
 - Version number + build number
-- Team ID
 - Provisioning profiles from searching by name rather than storing a uuid (so it actually works across teams)
 - `Info.plist` definitions
 - ?

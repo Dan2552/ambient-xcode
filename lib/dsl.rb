@@ -93,6 +93,11 @@ class TargetScope
     target_name = @name
     Ambient.configure { set_capability(target_name, capability_name) }
   end
+
+  def development_team(team_name)
+    target_name = @name
+    Ambient.configure { set_development_team(target_name, team_name) }
+  end
 end
 
 class SchemeScope

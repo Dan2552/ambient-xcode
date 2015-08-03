@@ -39,6 +39,10 @@ class CapabilitiesHelper
     capabilities.delete(capability_key(capability))
   end
 
+  def set_development_team(team)
+    target_attributes["DevelopmentTeam"] = team
+  end
+
   private
 
   def capabilities

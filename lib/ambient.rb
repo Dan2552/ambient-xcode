@@ -21,6 +21,7 @@ module Ambient
   @scheme_options = {}
   @parents = {}
   @capabilities = {}
+  @development_teams = {}
 
   def configure(&block)
     instance_eval &block
@@ -64,6 +65,10 @@ module Ambient
     capabilities << capability_name
   end
 
+  def set_development_team(target_name, team_name)
+    @development_teams[target_name] = team_name
+  end
+
   def setup_project(ambientfile)
     run_ambientfile(ambientfile)
     project_helper.print_info
@@ -75,6 +80,7 @@ module Ambient
     process_shared_target_options
     process_target_options
     process_capabilities
+    process_development_teams
     project_helper.save_changes
   end
 
@@ -117,6 +123,11 @@ module Ambient
   def process_capabilities
     puts "applying ambient capabilities"
     project_helper.process_capabilities(@capabilities)
+  end
+
+  def process_development_teams
+    puts "applying ambient development teams"
+    project_helper.process_development_teams(@development_teams)
   end
 
   def load_in_parent_target_values

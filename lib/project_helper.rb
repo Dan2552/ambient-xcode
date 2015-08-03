@@ -84,6 +84,17 @@ class ProjectHelper
     end
   end
 
+  def process_development_teams(development_teams)
+    development_teams.each do |target_name, development_team|
+      @project.targets.each do |target|
+        if target_name == target.to_s
+          helper = CapabilitiesHelper.new(@project, target)
+          helper.set_development_team(development_team)
+        end
+      end
+    end
+  end
+
   def print_info
     puts "Targets:"
     @project.targets.each { |t| puts "- #{t.to_s}" }
