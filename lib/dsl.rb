@@ -114,7 +114,9 @@ class SchemeScope
   end
 
   def configure(&block)
-    instance_eval(&block)
+    if block
+      instance_eval(&block)
+    end
   end
 
   def option(option_name, value)
