@@ -106,10 +106,12 @@ class SchemeScope
     @name = name
     @parent = parent
 
-    child = name
-
-    if @target
-      Ambient.configure { set_parent_target(target.name, child, parent) }
+    Ambient.configure do
+      set_parent_scheme(
+        target: target && target.name,
+        child: name,
+        parent: parent
+      )
     end
   end
 

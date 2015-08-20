@@ -31,7 +31,8 @@ module Ambient
     @project_helper ||= ProjectHelper.new
   end
 
-  def set_parent_target(target, child, parent)
+  def set_parent_scheme(target: nil, child: nil, parent: nil)
+    target = target || :all
     @parents[target] ||= {}
     @parents[target][child] = parent
   end
@@ -75,6 +76,7 @@ module Ambient
     reset_project_to_defaults if @use_defaults
     reset_targets_to_defaults if @use_defaults
     reset_capabilites_to_defaults if @use_defaults
+    load_in_parent_scheme_values
     process_project_options
     process_scheme_options
     process_shared_target_options
@@ -116,7 +118,6 @@ module Ambient
 
   def process_target_options
     puts "applying ambient target settings"
-    load_in_parent_target_values
     project_helper.process_target_options(@target_options)
   end
 
@@ -130,13 +131,19 @@ module Ambient
     project_helper.process_development_teams(@development_teams)
   end
 
-  def load_in_parent_target_values
+  def load_in_parent_scheme_values
     @parents.each do |target, parents|
       parents.each do |child, parent|
         if parent
-          options = @target_options[target]
-          child_options = options[child]
-          parent_options = options[parent]
+          if target == :all
+            puts "Identified #{child} as a child of #{parent}"
+            child_options = @scheme_options[child]
+            parent_options = @scheme_options[parent]
+          else
+            target_options = @target_options[target]
+            child_options = target_options[child]
+            parent_options = target_options[parent]
+          end
           child_options.merge!(parent_options) { |_, child, _| child }
         end
       end
