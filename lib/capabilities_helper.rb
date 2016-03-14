@@ -50,6 +50,14 @@ class CapabilitiesHelper
   end
 
   def target_attributes
+    unless @project.root_object.attributes["TargetAttributes"]
+      @project.root_object.attributes["TargetAttributes"] = {}
+    end
+
+    unless @project.root_object.attributes["TargetAttributes"][@target.uuid]
+      @project.root_object.attributes["TargetAttributes"][@target.uuid] = {}
+    end
+
     @project.root_object.attributes["TargetAttributes"][@target.uuid]
   end
 
