@@ -49,24 +49,23 @@ Name of the constant that can be used as an option is located in the **Quick Set
 
 Run `ambient` from the command line to write your settings into your project.
 
-The [example Ambientfile](https://github.com/Dan2552/ambient-xcode/blob/master/example/Ambientfile) matches the exact settings of a new iOS project.
+The [example Ambientfile](https://github.com/Dan2552/ambient-xcode/blob/master/example/Ambientfile) or [example Ambientfile-swift](https://github.com/Dan2552/ambient-xcode/blob/master/example/Ambientfile-swift) matches the exact settings of a new iOS project.
 
-If for any reason you want multiple Ambientfile, you can:
+If for any reason you want multiple Ambientfile (maybe for example if you wanted different capabilities for an Enterprise build vs an AppStore build), you can:
 ```
-use_settings_from 'Ambientfile'
+use_settings_from 'Ambientfile' # inherits all of the settings from Ambientfile
 
-target "Babylon" do
-  development_team "341LABUM21"
+target "Monies" do
+  development_team "341MONEY25"
   capability :apple_pay
 end
 ```
 
-Just run `ambient [filename]` (i.e. `ambient Ambientfile-enterprise`)
+Just run `ambient [filename]` (e.g. `ambient Ambientfile-enterprise`)
 
 Notes
 =====
 
-- You can re-run `ambient` as many times as possible.
 - Use the `use_defaults_for_everything_not_specified_in_this_file!` setting to ensure your project file is clean. Warning though: this setting will clear all your targets' settings, so be sure to define absolutely every setting in the `Ambientfile` if you want to use this.
 - When defining settings directly within a target, the setting is set to each scheme.
 
