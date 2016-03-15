@@ -44,6 +44,9 @@ target "MyProject" do
 end
 ```
 
+Name of the constant that can be used as an option is located in the **Quick Settings**
+![Constants](example/images/Constant.png)
+
 Run `ambient` from the command line to write your settings into your project.
 
 The [example Ambientfile](https://github.com/Dan2552/ambient-xcode/blob/master/example/Ambientfile) matches the exact settings of a new iOS project.
