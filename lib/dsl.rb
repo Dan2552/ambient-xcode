@@ -6,6 +6,80 @@ def option(name, value)
   Ambient.configure { set_option(name, value) }
 end
 
+def base_ios_settings!(project_name, prefix: "", tests: false, ui_tests: false, swift: true, target: nil, test_target: nil, ui_test_target: nil)
+  use_defaults_for_everything_not_specified_in_this_file!
+  enable_default_warnings!
+
+  target ||= "project_name"
+  test_target ||= "#{project_name}Tests"
+  ui_test_target ||= "#{project_name}UITests"
+  tests = true if test_target
+  ui_tests = true if ui_test_target
+
+  option "ALWAYS_SEARCH_USER_PATHS", false
+  option "CLANG_CXX_LANGUAGE_STANDARD", "gnu++0x"
+  option "CLANG_CXX_LIBRARY", "libc++"
+  option "CLANG_ENABLE_MODULES", true
+  option "CLANG_ENABLE_OBJC_ARC", true
+
+  option "CODE_SIGN_IDENTITY[sdk=iphoneos*]", "iPhone Developer"
+  option "COPY_PHASE_STRIP", false
+
+  option "ENABLE_STRICT_OBJC_MSGSEND", true
+  option "GCC_C_LANGUAGE_STANDARD", "gnu99"
+  option "GCC_NO_COMMON_BLOCKS", true
+  option "SDKROOT", "iphoneos"
+  option "IPHONEOS_DEPLOYMENT_TARGET", "9.0"
+
+  scheme "Debug" do
+    option "DEBUG_INFORMATION_FORMAT", "dwarf"
+    option "ENABLE_TESTABILITY", true
+    option "MTL_ENABLE_DEBUG_INFO", true
+    option "ONLY_ACTIVE_ARCH", true
+    option "GCC_DYNAMIC_NO_PIC", false
+    option "GCC_OPTIMIZATION_LEVEL", "0"
+    option "GCC_PREPROCESSOR_DEFINITIONS", ["DEBUG=1", "$(inherited)"]
+    option "SWIFT_OPTIMIZATION_LEVEL", "-Onone" if swift
+  end
+
+  scheme "Release" do
+    option "DEBUG_INFORMATION_FORMAT", "dwarf-with-dsym"
+    option "ENABLE_NS_ASSERTIONS", false
+    option "MTL_ENABLE_DEBUG_INFO", false
+    option "VALIDATE_PRODUCT", true
+  end
+
+  target project_name do
+    option "INFOPLIST_FILE", "#{project_name}/Info.plist"
+    option "PRODUCT_BUNDLE_IDENTIFIER", "#{prefix}#{project_name}"
+    option "ASSETCATALOG_COMPILER_APPICON_NAME", "AppIcon"
+    option "LD_RUNPATH_SEARCH_PATHS", "$(inherited) @executable_path/Frameworks"
+    option "PRODUCT_NAME", "$(TARGET_NAME)"
+  end
+
+  if tests
+    target test_target do
+      option "INFOPLIST_FILE", "#{project_name}Tests/Info.plist"
+      option "BUNDLE_LOADER", "$(TEST_HOST)"
+      option "TEST_HOST", "$(BUILT_PRODUCTS_DIR)/#{project_name}.app/#{project_name}"
+      option "PRODUCT_BUNDLE_IDENTIFIER", "#{prefix}#{project_name}Tests"
+      option "LD_RUNPATH_SEARCH_PATHS", "$(inherited) @executable_path/Frameworks @loader_path/Frameworks"
+      option "PRODUCT_NAME", "$(TARGET_NAME)"
+    end
+  end
+
+  if ui_tests
+    target ui_test_target do
+      option "INFOPLIST_FILE", "#{project_name}UITests/Info.plist"
+      option "TEST_TARGET_NAME", "#{project_name}"
+      option "PRODUCT_BUNDLE_IDENTIFIER", "#{prefix}#{project_name}UITests"
+      option "LD_RUNPATH_SEARCH_PATHS", "$(inherited) @executable_path/Frameworks @loader_path/Frameworks"
+      option "USES_XCTRUNNER", "YES"
+      option "PRODUCT_NAME", "$(TARGET_NAME)"
+    end
+  end
+end
+
 def enable_extra_warnings_and_static_analyser!
   warnings = %w(GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED
     GCC_WARN_MISSING_PARENTHESES
