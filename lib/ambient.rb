@@ -8,6 +8,7 @@ end
 
 require_relative 'project_helper'
 require_relative 'capabilities_helper'
+require_relative 'plist_helper'
 require_relative 'dsl'
 
 module Ambient
@@ -151,7 +152,7 @@ module Ambient
   end
 
   def run_ambientfile(filename)
-    puts "Reading settings from #{filename}"
+    puts "# Reading settings from #{filename}"
     ambient = File.join(Dir.pwd, filename)
     raise "#{filename} not found in current directory." unless File.exists?(ambient)
     load ambient

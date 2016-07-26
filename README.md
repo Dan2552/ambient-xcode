@@ -37,6 +37,10 @@ target "MyProject" do
     option "BUNDLE_DISPLAY_NAME_SUFFIX", "uk.danielgreen.MyProject"
   end
 end
+
+plist("MyProject/Info.plist") do
+  entry "LSApplicationQueriesSchemes", [ "dbapi-2", "dbapi-8-emm"]
+end
 ```
 
 Run `ambient` from the command line to write your settings into your project.
@@ -69,6 +73,4 @@ Possible future features
 - Helper method to change build phases to default
 - Version number + build number
 - Provisioning profiles from searching by name rather than storing a uuid (so it actually works across teams)
-- `Info.plist` definitions
-- ?
 - Ability to not have to commit `*.xcodeproj` into version control (maybe too far?)

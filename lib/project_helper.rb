@@ -96,6 +96,7 @@ class ProjectHelper
   end
 
   def print_info
+    puts ""
     puts "Targets:"
     @project.targets.each { |t| puts "- #{t.to_s}" }
     puts ""

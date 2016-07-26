@@ -143,6 +143,26 @@ def scheme(name, parent: nil, &block)
   SchemeScope.new(nil, name, parent).configure(&block)
 end
 
+def plist(path, &block)
+  PlistScope.new(path).configure(&block)
+end
+
+class PlistScope
+  attr_reader :helper
+
+  def initialize(path)
+    @helper = PlistHelper.new(path)
+  end
+
+  def configure(&block)
+    instance_eval(&block)
+  end
+
+  def entry(key, value)
+    helper.add_entry(key, value)
+  end
+end
+
 class TargetScope
   attr_reader :name
 
