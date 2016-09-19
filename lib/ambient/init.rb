@@ -5,9 +5,9 @@ module Ambient
                 :project_prefix
 
     def initialize(path = nil, project_name = nil, project_prefix = nil)
-      @path = path || File.expand_path('.', File.dirname(__FILE__))
+      @path = path || Dir.pwd
       @project_name = project_name || "MyProject"
-      @project_prefix = project_prefix || "com.#{project_name.downcase}."
+      @project_prefix = project_prefix || "com.#{@project_name.downcase}."
     end
 
     def create_ambientfile
