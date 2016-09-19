@@ -4,5 +4,11 @@ require 'fileutils'
 $:.push File.expand_path("../../lib", __FILE__)
 
 require 'ambient'
-file = ARGV[0] || 'Ambientfile'
-Ambient.setup_project(file)
+
+if ARGV[0] == "init"
+  Ambient::Init.new.create_ambientfile
+elsif ARGV[0] == "new"
+  Ambient::ProjectCreation.new(Dir.pwd, ARGV[1]).create_ios_project
+else
+  Ambient::Application.new.run_ambientfile(ARGV[0])
+end

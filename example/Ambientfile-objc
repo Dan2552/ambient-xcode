@@ -1,5 +1,5 @@
-PROJECT = "EmptyProject"
-PREFIX = "uk.danielgreen."
+PROJECT = "MyProject"
+PREFIX = "com.organization."
 
 base_ios_settings! PROJECT,
                    prefix: PREFIX,
