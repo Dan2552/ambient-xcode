@@ -14,6 +14,7 @@ module Ambient
       puts "# Setting up project..."
       copy_from_template
       rename_project_to_name
+      find_and_replace_instances_of_template_to_name
       create_ambientfile
       run_ambientfile
     end
@@ -54,12 +55,29 @@ module Ambient
                    "#{project_path}/#{name}.xcodeproj"
     end
 
+    def find_and_replace_instances_of_template_to_name
+      files_in_project.each do |file|
+        find_and_replace(file, "PRODUCTNAME", name)
+      end
+    end
+
     def project_path
       path + "/#{name}"
     end
 
     def ios_template_path
       File.expand_path("../../../templates/ios", __FILE__)
+    end
+
+    def files_in_project
+      Dir.glob(project_path + '/**/*').select { |path| File.file?(path) }
+    end
+
+    def find_and_replace(path, old, new)
+      text = File.read(path)
+      replace = text.gsub(old, new)
+      return if text == replace
+      File.open(path, "w") { |file| file.puts replace }
     end
   end
 end
