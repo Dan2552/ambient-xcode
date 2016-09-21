@@ -43,12 +43,22 @@ plist("MyProject/Info.plist") do
 end
 ```
 
-Run `ambient` from the command line to write your settings into your project.
+Run `ambient` from the command line to write your settings into your project:
+```
+usage:
+$ ambient COMMAND
 
-If you want, you can have a multiple `Ambientfile` for the same project. Just name it something else and run `ambient [filename]` (e.g. `ambient Ambientfile-enterprise`)
+Commands:
++ [no arguments]	Applies the settings from the Ambientfile
++ init			Creates an Ambientfile in the current directory
++ new NAME		Creates a new iOS Xcode project with given name
++ [anything else]	Applies the settings from the file name supplied
+```
+
+You can also have more than one `Ambientfile` for the same project. Just name it something else and run `ambient [filename]` (e.g. `ambient Ambientfile-enterprise`). Use `use_settings_from` to inherit settings:
 
 ```ruby
-use_settings_from 'Ambientfile' # inherits all of the settings from Ambientfile
+use_settings_from 'Ambientfile'
 
 target "Monies" do
   development_team "341MONEY25"
