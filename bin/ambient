@@ -5,10 +5,34 @@ $:.push File.expand_path("../../lib", __FILE__)
 
 require 'ambient'
 
+def print_help
+  print_version
+  puts ""
+  puts "usage: "
+  puts "$ ambient COMMAND"
+  puts ""
+  puts "Commands:"
+  puts "+ [no arguments]\tApplies the settings from the Ambientfile"
+  puts "+ init\t\t\tCreates an Ambientfile in the current directory"
+  puts "+ new NAME\t\tCreates a new iOS Xcode project with given name"
+  puts "+ [anything else]\tApplies the settings from the file name supplied"
+end
+
+def print_version
+  path = File.expand_path("../../", __FILE__)
+  gem_contents = File.read("#{path}/ambient-xcode.gemspec")
+  match = gem_contents.match /^\s*gem.version\s*= ('|")(.*)('|")/
+  puts "ambient-xcode #{match[2]}"
+end
+
 if ARGV[0] == "init"
   Ambient::Init.new.create_ambientfile
 elsif ARGV[0] == "new"
   Ambient::ProjectCreation.new(Dir.pwd, ARGV[1]).create_ios_project
+elsif ARGV[0] == "help" || ARGV[0] == "--help"
+  print_help
+elsif ARGV[0] == "version" || ARGV[0] == "--version" || ARGV[0] == "-v"
+  print_version
 else
   Ambient::Application.new.run_ambientfile(ARGV[0])
 end
