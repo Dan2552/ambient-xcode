@@ -5,7 +5,7 @@ module Ambient
 
     def initialize(path, name)
       @path = path
-      @name = name
+      @name = name.gsub(/\W/, "")
       check_name!
     end
 
