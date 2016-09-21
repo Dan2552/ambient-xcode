@@ -3,7 +3,7 @@ module Ambient
     attr_reader :path
 
     def initialize(path = nil)
-      @path = path || File.expand_path('.', File.dirname(__FILE__))
+      @path = path || Dir.pwd
 
       @use_defaults = false
       @project_options = {}
