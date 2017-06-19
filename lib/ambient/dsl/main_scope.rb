@@ -26,19 +26,20 @@ module Ambient
         ui_tests = true if ui_test_target
 
         option "ALWAYS_SEARCH_USER_PATHS", false
-        option "CLANG_CXX_LANGUAGE_STANDARD", "gnu++0x"
+        option "CLANG_CXX_LANGUAGE_STANDARD", "gnu++14"
         option "CLANG_CXX_LIBRARY", "libc++"
         option "CLANG_ENABLE_MODULES", true
         option "CLANG_ENABLE_OBJC_ARC", true
 
-        option "CODE_SIGN_IDENTITY[sdk=iphoneos*]", "iPhone Developer"
+        option "CODE_SIGN_IDENTITY", "iPhone Developer"
         option "COPY_PHASE_STRIP", false
 
         option "ENABLE_STRICT_OBJC_MSGSEND", true
-        option "GCC_C_LANGUAGE_STANDARD", "gnu99"
+        option "GCC_C_LANGUAGE_STANDARD", "gnu11"
         option "GCC_NO_COMMON_BLOCKS", true
         option "SDKROOT", "iphoneos"
-        option "IPHONEOS_DEPLOYMENT_TARGET", "9.0"
+        option "IPHONEOS_DEPLOYMENT_TARGET", "10.0"
+        option "SWIFT_VERSION", "3.0"
 
         scheme "Debug" do
           option "DEBUG_INFORMATION_FORMAT", "dwarf"
@@ -49,6 +50,7 @@ module Ambient
           option "GCC_OPTIMIZATION_LEVEL", "0"
           option "GCC_PREPROCESSOR_DEFINITIONS", ["DEBUG=1", "$(inherited)"]
           option "SWIFT_OPTIMIZATION_LEVEL", "-Onone" if swift
+          option "SWIFT_ACTIVE_COMPILATION_CONDITIONS", "DEBUG"
         end
 
         scheme "Release" do
@@ -56,6 +58,7 @@ module Ambient
           option "ENABLE_NS_ASSERTIONS", false
           option "MTL_ENABLE_DEBUG_INFO", false
           option "VALIDATE_PRODUCT", true
+          option "SWIFT_OPTIMIZATION_LEVEL", "-Owholemodule"
         end
 
         target project_name do
@@ -114,8 +117,17 @@ module Ambient
           CLANG_WARN__DUPLICATE_METHOD_MATCH
           GCC_WARN_64_TO_32_BIT_CONVERSION
           RUN_CLANG_STATIC_ANALYZER
-          GCC_TREAT_WARNINGS_AS_ERRORS)
+          GCC_TREAT_WARNINGS_AS_ERRORS
+          CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING
+          CLANG_WARN_COMMA
+          CLANG_WARN_DOCUMENTATION_COMMENTS
+          CLANG_WARN_INFINITE_RECURSION
+          CLANG_WARN_RANGE_LOOP_ANALYSIS
+          CLANG_WARN_STRICT_PROTOTYPES
+          CLANG_WARN_SUSPICIOUS_MOVE)
         warnings.each { |w| option(w, true) }
+
+        option "CLANG_WARN_UNGUARDED_AVAILABILITY", "YES_AGGRESSIVE"
       end
 
       def enable_default_warnings!
