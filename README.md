@@ -1,3 +1,6 @@
+> [!WARNING]
+> You shouldn't use this, it's not maintained and probably doesn't work with latest versions of things. Looks like maybe https://github.com/yonaskolb/XcodeGen might be similar
+
 Ambient environment for Xcode projects
 ======================================
 
